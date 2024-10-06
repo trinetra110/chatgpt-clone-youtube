@@ -1,14 +1,14 @@
 from flask import Flask, render_template, jsonify, request
 from flask_pymongo import PyMongo
 import openai
+import os
+from dotenv import load_dotenv
 
-openai.api_key = "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"
-
-
-
+load_dotenv()
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb+srv://harry123:7*Q9KMh%409XHW4rg@mongoyoutube.nhtraxd.mongodb.net/chatgpt"
+app.config["MONGO_URI"] = os.getenv("MONGO_URL")
 mongo = PyMongo(app)
 
 @app.route("/")
@@ -30,7 +30,7 @@ def qa():
             return jsonify(data)
         else:
             response = openai.Completion.create(
-                    model="text-davinci-003",
+                    model="davinci-002",
                     prompt=question,
                     temperature=0.7,
                     max_tokens=256,
